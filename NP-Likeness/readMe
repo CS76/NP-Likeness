@@ -1,0 +1,5 @@
+The current version in the trunk is mavenized version of the existing np-likeness project.
+This is done in order to ease the dependency handling for other maven projects.
+The older non-mavenized version can be found under the tags.
+
+Use goal assembly:assembly to bundle an executable after checkout.
