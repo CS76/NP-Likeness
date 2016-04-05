@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FilenameUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.aromaticity.CDKHueckelAromaticityDetector;
 import org.openscience.cdk.exception.CDKException;
@@ -40,12 +42,16 @@ public class NPScoreCalculator {
     //    private IteratingSMILESReader smilesReader = null;
     private LineNumberReader smilesReader = null;
     private BufferedWriter smilesWriter = null;
+    private BufferedWriter jsonWriter = null;
     private BufferedWriter fragmentsSMILESWriter = null;
     //private BufferedWriter uuidScoreWriter = null;
     private boolean reconstructFragments = false;
     private SignatureTableLookUp tableToLookUp = null;
+    private JSONArray jsonList = null;
     public boolean inputIsSDF = true;
     public boolean outputIsSDF = true;
+    public boolean outputIsJSON = true;
+    public boolean outputIsSMILES = true;
     private SmilesGenerator smilesGenerator = null;
     private IChemObjectBuilder iChemObjectBuilder = null;
 
@@ -131,8 +137,11 @@ public class NPScoreCalculator {
         } else {
             createSMILESReader(inFile);
         }
+
         if (outputIsSDF) {
             createSDFWriter(outFile);
+        }  else if(outputIsJSON) {
+            createJSONWriter(outFile);
         } else {
             createSMILESWriter(outFile);
         }
@@ -195,10 +204,26 @@ public class NPScoreCalculator {
         }
     }
 
+    private void createJSONWriter(File outFile) {
+        try {
+            System.out.println("initializing json writer");
+            jsonWriter = new BufferedWriter(new FileWriter(outFile));
+        } catch (FileNotFoundException ex) {
+            System.out.println("Oops ! File not found. Please check if the -in file or -out directory is correct");
+            Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void createAllReaderWriters(File sdfFile, File outFile, File outFragmentsFile) {
         try {
             createReaderWriter(sdfFile, outFile);
-            fragmentsSMILESWriter = new BufferedWriter(new FileWriter(outFragmentsFile));
+            if(!outputIsJSON) {
+                fragmentsSMILESWriter = new BufferedWriter(new FileWriter(outFragmentsFile));
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
             Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
@@ -247,6 +272,11 @@ public class NPScoreCalculator {
         System.out.println("iterating smiles");
         int count = 0;
         String line;
+
+        if(outputIsJSON){
+            this.jsonList = new JSONArray();
+        }
+
         try {
             while ((line = smilesReader.readLine()) != null) {
                 String smiles_names = line;
@@ -258,18 +288,25 @@ public class NPScoreCalculator {
                     List<IAtomContainer> fragments = score(molecule);
                     System.out.println(count++);
                     molecule.setProperties(properties);
-                    if (!outputIsSDF) {
-                        writeBackSMILES(splitted[0], (String) molecule.getProperty(NPScorerConstants.NATURAL_PRODUCT_LIKENESS_SCORE), (String) molecule.getProperty(NPScorerConstants.MOLECULE_ID) );
-                    } else {
-                        writeBackSDF(molecule);
-                    }
-                    writeSMILES(fragments);
 
+                    if(outputIsJSON){
+                        storeJSONData(splitted[0], (String) molecule.getProperty(NPScorerConstants.NATURAL_PRODUCT_LIKENESS_SCORE), fragments);
+                    }else{
+                        if (!outputIsSDF) {
+                            writeBackSMILES(splitted[0], (String) molecule.getProperty(NPScorerConstants.NATURAL_PRODUCT_LIKENESS_SCORE), (String) molecule.getProperty(NPScorerConstants.MOLECULE_ID) );
+                        } else {
+                            writeBackSDF(molecule);
+                        }
+                        writeSMILES(fragments);
+                    }
                 } catch (InvalidSmilesException ex) {
                     Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+            if(outputIsJSON){
+                writeBackJSON();
             }
             smilesReader.close();
         } catch (IOException e) {
@@ -277,6 +314,34 @@ public class NPScoreCalculator {
         }
     }
 
+    public void storeJSONData(String smiles, String score, List<IAtomContainer> fragments){
+
+        JSONObject obj = new JSONObject();
+        obj.put("smiles", smiles);
+        obj.put("np-score", score);
+        if (reconstructFragments) {
+            JSONArray list = new JSONArray();
+            for (IAtomContainer fragment : fragments) {
+                    try {
+                        list.add( getSMILES(fragment) + ";" + (String)fragment.getProperty(NPScorerConstants.FRAGMENT_SCORE));
+                    } catch (CDKException e) {
+                        e.printStackTrace();
+                    }
+            }
+            obj.put("fragments", list);
+        }
+        this.jsonList.add(obj);
+    }
+
+    public void writeBackJSON(){
+
+        try {
+            jsonWriter.write(jsonList.toJSONString());
+        } catch (IOException ex) {
+            Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+    }
 
     /**
      * @param molecule
@@ -421,6 +486,9 @@ public class NPScoreCalculator {
             if (smilesWriter != null) {
                 smilesWriter.close();
             }
+            if(jsonWriter != null){
+                jsonWriter.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -432,6 +500,14 @@ public class NPScoreCalculator {
 
     public void setOutputIsSDF(boolean outputIsSDF) {
         this.outputIsSDF = outputIsSDF;
+    }
+
+    public void setOutputIsJSON(boolean outputIsJSON) {
+        this.outputIsJSON = outputIsJSON;
+    }
+
+    public void setOutputIsSMILES(boolean outputIsSMILES) {
+        this.outputIsSMILES = outputIsSMILES;
     }
 
 

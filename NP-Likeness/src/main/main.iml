@@ -7,20 +7,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="target" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1" level="project" />
     <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-io:1.5.6" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-smiles:1.5.6" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-interfaces:1.5.6" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-standard:1.5.6" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-data:1.5.6" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-core:1.5.6" level="project" />
-    <orderEntry type="library" name="Maven: signatures:signatures:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-signature:1.5.6" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-formula:1.5.6" level="project" />
-    <orderEntry type="library" name="Maven: net.sf.jni-inchi:jni-inchi:0.7" level="project" />
-    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-inchi:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-data:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-standard:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-core:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-interfaces:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-io:1.5.6" level="project" />
     <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-silent:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-smiles:1.5.6" level="project" />
     <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-valencycheck:1.5.6" level="project" />
   </component>
 </module>

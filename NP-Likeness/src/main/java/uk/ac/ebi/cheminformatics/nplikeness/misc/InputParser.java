@@ -66,7 +66,7 @@ public class InputParser {
         options.addOption("in", true, "Input structure file to score or to generateSignatures");
         options.addOption("out", true, "Output structure from scoring");
         options.addOption("intype", true, "Input file type: Enter sdf/smi");
-        options.addOption("outtype", true, "Output file type: Enter sdf/smi");
+        options.addOption("outtype", true, "Output file type: Enter sdf/smi/json");
         options.addOption("reconstructFragments", true, "Optional boolean argument {true/false} to reconstruct fragments. If true individual fragments with scores are written "
                 + "out in SMILES format");
         options.addOption("outFragments", true, "Output .txt file for reconstructed fragments. Specify this option only if 'reconstructFragments' is true." +
@@ -82,7 +82,7 @@ public class InputParser {
     }
 
     public enum FILE_TYPE {
-        sdf, smi;
+        sdf, smi, json;
     }
 
     public void parseUserInput(String[] args) throws IOException {
@@ -188,7 +188,10 @@ public class InputParser {
             return FILE_TYPE.sdf;
         } else if (value.equalsIgnoreCase("smi")) {
             return FILE_TYPE.smi;
+        } else if (value.equalsIgnoreCase("json")) {
+            return FILE_TYPE.json;
         }
+
         return null;
     }
 
@@ -243,6 +246,13 @@ public class InputParser {
         if (outFile != null) {
             if (out_file_type == FILE_TYPE.smi) {
                 scorer.setOutputIsSDF(false);
+                scorer.setOutputIsJSON(false);
+            }else if (out_file_type == FILE_TYPE.json){
+                scorer.setOutputIsSMILES(false);
+                scorer.setOutputIsSDF(false);
+            }else{
+                scorer.setOutputIsSMILES(false);
+                scorer.setOutputIsJSON(false);
             }
             if (outFile.exists()) {
                 return outFile;
@@ -264,6 +274,13 @@ public class InputParser {
                 }
             } else {
                 if (out_file_type == FILE_TYPE.smi) {
+                    scorer.setOutputIsSDF(false);
+                    scorer.setOutputIsJSON(false);
+                }else if(out_file_type == FILE_TYPE.sdf){
+                    scorer.setOutputIsSMILES(false);
+                    scorer.setOutputIsJSON(false);
+                }else{
+                    scorer.setOutputIsSMILES(false);
                     scorer.setOutputIsSDF(false);
                 }
             }
