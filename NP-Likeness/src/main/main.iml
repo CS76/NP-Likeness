@@ -19,5 +19,6 @@
     <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-silent:1.5.6" level="project" />
     <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-smiles:1.5.6" level="project" />
     <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-valencycheck:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: org.openscience.cdk:cdk-signature:1.5.6" level="project" />
   </component>
 </module>
