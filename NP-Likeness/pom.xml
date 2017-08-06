@@ -62,10 +62,10 @@
         <cdk.version>1.5.10</cdk.version>
     </properties>
     <repositories>
-      <repository>
-	<id>mvnrepository</id>
-        <url>http://repo1.maven.org/maven2</url>
-      </repository>
+        <repository>
+            <id>mvnrepository</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
         <repository>
             <id>jni-inchi</id>
             <name>JNI-InChI Maven Repository</name>
@@ -202,18 +202,4 @@
             <version>1.1</version>
         </dependency>
     </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>ebi-repo</id>
-            <name>EBI Repository</name>
-            <url>${ebi.maven.repo.deploy.url}</url>
-        </repository>
-
-        <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>ebi-repo-snapshots</id>
-            <name>EBI Snapshots Repository</name>
-            <url>${ebi.maven.repo.snapshots.deploy.url}</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
