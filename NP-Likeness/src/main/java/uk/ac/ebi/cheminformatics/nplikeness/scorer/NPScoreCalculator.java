@@ -4,21 +4,15 @@
  */
 package uk.ac.ebi.cheminformatics.nplikeness.scorer;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.apache.commons.io.FilenameUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.aromaticity.CDKHueckelAromaticityDetector;
+import org.openscience.cdk.aromaticity.Aromaticity;
+import org.openscience.cdk.aromaticity.ElectronDonation;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.exception.InvalidSmilesException;
+import org.openscience.cdk.graph.CycleFinder;
+import org.openscience.cdk.graph.Cycles;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.io.SDFWriter;
@@ -29,6 +23,14 @@ import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import uk.ac.ebi.cheminformatics.nplikeness.misc.NPScorerConstants;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class to read SDFile and calculate NP-likeness score
@@ -156,9 +158,6 @@ public class NPScoreCalculator {
             System.out.println("Oops ! File not found. Please check if the -in file or -out directory is correct");
             Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -185,9 +184,6 @@ public class NPScoreCalculator {
             System.out.println("Oops ! File not found. Please check if the -in file or -out directory is correct");
             Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -464,7 +460,12 @@ public class NPScoreCalculator {
             boolean isArom = false;
             try {
                 AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(fragment);
-                isArom = CDKHueckelAromaticityDetector.detectAromaticity(fragment);
+
+                ElectronDonation model = ElectronDonation.cdk();
+                CycleFinder cycles = Cycles.cdkAromaticSet();
+                Aromaticity aromaticity = new Aromaticity(model, cycles);
+                isArom = aromaticity.apply(fragment);
+
             } catch (CDKException ex) {
                 Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
             }
