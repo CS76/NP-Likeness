@@ -59,53 +59,13 @@
         </extensions>
     </build>
     <properties>
-        <cdk.version>1.5.6</cdk.version>
+        <cdk.version>1.5.10</cdk.version>
     </properties>
     <repositories>
-        <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>ebi-snapshot-repo</id>
-            <name>The EBI internal snapshot repository</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo_snapshots</url>
-        </repository>
-        <repository>
-            <!--<releases>-->
-            <!--<enabled>false</enabled>-->
-            <!--</releases>-->
-            <snapshots>
-            <enabled>true</enabled>
-            </snapshots>
-            <id>ebi-repo</id>
-            <name>The EBI internal repository</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo</url>
-        </repository>
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>cambridge-repo</id>
-            <name>The University of Cambridge repository</name>
-            <url>https://maven.ch.cam.ac.uk/m2repo</url>
-        </repository>
-        <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>nexus</id>
-            <name>The EBI Nexus repo</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus</url>
-        </repository>
+      <repository>
+	<id>mvnrepository</id>
+        <url>http://repo1.maven.org/maven2</url>
+      </repository>
         <repository>
             <id>jni-inchi</id>
             <name>JNI-InChI Maven Repository</name>
