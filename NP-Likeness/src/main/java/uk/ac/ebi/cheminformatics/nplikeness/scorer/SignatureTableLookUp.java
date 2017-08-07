@@ -14,8 +14,11 @@ import java.util.logging.Logger;
 
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.aromaticity.CDKHueckelAromaticityDetector;
+import org.openscience.cdk.aromaticity.Aromaticity;
+import org.openscience.cdk.aromaticity.ElectronDonation;
 import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.graph.CycleFinder;
+import org.openscience.cdk.graph.Cycles;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.signature.MoleculeFromSignatureBuilder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
@@ -162,8 +165,13 @@ public class SignatureTableLookUp {
         builder.makeFromColoredTree(tree);
         IAtomContainer generatedMolecule = builder.getAtomContainer();
         AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(generatedMolecule);
-        CDKHueckelAromaticityDetector.detectAromaticity(generatedMolecule);
+
+        ElectronDonation model = ElectronDonation.cdk();
+        CycleFinder cycles = Cycles.cdkAromaticSet();
+        Aromaticity aromaticity = new Aromaticity(model, cycles);
+        aromaticity.apply(generatedMolecule);
         generatedMolecule.setProperty(NPScorerConstants.AROMATICITY_PERCEIVED,true);
+
         return generatedMolecule;
     }
 }

@@ -4,20 +4,20 @@
  */
 package uk.ac.ebi.cheminformatics.nplikeness.moleculecuration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.openscience.cdk.RingSet;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.formula.MolecularFormula;
 import org.openscience.cdk.graph.ConnectivityChecker;
+import org.openscience.cdk.graph.Cycles;
 import org.openscience.cdk.interfaces.*;
-import org.openscience.cdk.ringsearch.SSSRFinder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.BondManipulator;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 import uk.ac.ebi.cheminformatics.nplikeness.misc.LinearSugars;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Contains method to remove linear and ring sugars
@@ -39,13 +39,13 @@ public class SugarRemover {
 
     public List<IAtomContainer> removeSugars(List<IAtomContainer> moleculeList) {
 
+
         List<IAtomContainer> sugarRemovedMolecules = new ArrayList<IAtomContainer>();
         if (!moleculeList.isEmpty()) {
             for (IAtomContainer molecule : moleculeList) {
                 try {
 
-                    SSSRFinder molecule_ring = new SSSRFinder(molecule);
-                    IRingSet ringset = molecule_ring.findSSSR();
+                    IRingSet ringset = Cycles.sssr(molecule).toRingSet();
                     for (IAtomContainer one_ring : ringset.atomContainers()) {
                         molecularFormula = MolecularFormulaManipulator.getMolecularFormula(one_ring);
                         String formula = MolecularFormulaManipulator.getString(molecularFormula);
@@ -138,8 +138,7 @@ public class SugarRemover {
     }
 
     private RingSet getRingsInTheMolecule(IAtomContainer molecule) {
-        SSSRFinder molecule_ring = new SSSRFinder(molecule);
-        return (RingSet) molecule_ring.findSSSR();
+        return (RingSet) Cycles.sssr(molecule).toRingSet();
     }
 
     private boolean isSugarRing(IAtomContainer ring) {

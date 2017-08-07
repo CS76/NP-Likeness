@@ -26,6 +26,15 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
@@ -59,52 +68,12 @@
         </extensions>
     </build>
     <properties>
-        <cdk.version>1.5.6</cdk.version>
+        <cdk.version>1.5.10</cdk.version>
     </properties>
     <repositories>
         <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>ebi-snapshot-repo</id>
-            <name>The EBI internal snapshot repository</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo_snapshots</url>
-        </repository>
-        <repository>
-            <!--<releases>-->
-            <!--<enabled>false</enabled>-->
-            <!--</releases>-->
-            <snapshots>
-            <enabled>true</enabled>
-            </snapshots>
-            <id>ebi-repo</id>
-            <name>The EBI internal repository</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo</url>
-        </repository>
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>cambridge-repo</id>
-            <name>The University of Cambridge repository</name>
-            <url>https://maven.ch.cam.ac.uk/m2repo</url>
-        </repository>
-        <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>nexus</id>
-            <name>The EBI Nexus repo</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus</url>
+            <id>mvnrepository</id>
+            <url>http://repo1.maven.org/maven2</url>
         </repository>
         <repository>
             <id>jni-inchi</id>
@@ -242,18 +211,4 @@
             <version>1.1</version>
         </dependency>
     </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>ebi-repo</id>
-            <name>EBI Repository</name>
-            <url>${ebi.maven.repo.deploy.url}</url>
-        </repository>
-
-        <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>ebi-repo-snapshots</id>
-            <name>EBI Snapshots Repository</name>
-            <url>${ebi.maven.repo.snapshots.deploy.url}</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
