@@ -1,6 +1,6 @@
 # NP-Likeness
 
-## About the Natural-Product-Likeness Scorer
+#### About the Natural-Product-Likeness Scorer
 
 The Natural-Product-Likeness Scorer [1] was developed by Kalai Vanii Jayaseelan (Contact:
 kalai@ebi.ac.uk), Andreas Truszkowski, Pablo Moreno, Peter Ertl and Christoph Steinbeck to
@@ -29,6 +29,18 @@ To get the usage information run the above command with -help option.
 The following output after executing the above option. 
 
 Few more input options have been added since the last release. The new additional options are to generate the training set using users personal training dataset. Please see Figure 2 for more information on training dataset creation.
+
+
+
+![figure 1 :Input options for NP-likeness calculator](./Figures/figure1.png)
+
+Figure 1: Input options for NP-likeness calculator
+
+![figure 2 : Workflow of options to create user knowledge-base based
+training set](./Figures/figure2.png)
+
+Figure 2: Workflow of options to create user knowledge-base based
+training set
 
 #### Options
 ##### ``` - generateSignatures ```
