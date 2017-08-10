@@ -2,8 +2,7 @@
 
 #### About the Natural-Product-Likeness Scorer
 
-The Natural-Product-Likeness Scorer [1] was developed by Kalai Vanii Jayaseelan (Contact:
-kalai@ebi.ac.uk), Andreas Truszkowski, Pablo Moreno, Peter Ertl and Christoph Steinbeck to
+The Natural-Product-Likeness Scorer [1] was developed by Kalai Vanii Jayaseelan (kalai@ebi.ac.uk), Andreas Truszkowski, Pablo Moreno, Peter Ertl and Christoph Steinbeck (christoph.steinbeck@uni-jena.de) to
 provide an open-source, open-data re-implementation of Peter Ertl’s previous work [2].
 Ertl originally developed this based on a close-data training set of natural products to screen large compound libraries for natural product likeness in drug designing studies. Our re-implemented NPlikeness scorer is using open source and open data to validate natural product likeness based on now publicly available sets of natural products described in [1]
 
