@@ -68,7 +68,7 @@
         </extensions>
     </build>
     <properties>
-        <cdk.version>1.5.10</cdk.version>
+        <cdk.version>2.0</cdk.version>
     </properties>
     <repositories>
         <repository>
@@ -179,6 +179,15 @@
             <version>${cdk.version}</version>
             <type>jar</type>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.openscience.cdk</groupId>
+            <artifactId>cdk-legacy</artifactId>
+            <version>${cdk.version}</version>
+            <type>jar</type>
+        </dependency>
+
         <dependency>
             <groupId>jfree</groupId>
             <artifactId>jfreechart</artifactId>
