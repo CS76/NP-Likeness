@@ -16,6 +16,7 @@ import org.openscience.cdk.io.iterator.IteratingSDFReader;
 import org.openscience.cdk.signature.AtomSignature;
 import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+import uk.ac.ebi.cheminformatics.nplikeness.misc.InputParser;
 import uk.ac.ebi.cheminformatics.nplikeness.misc.NPScorerConstants;
 import uk.ac.ebi.cheminformatics.nplikeness.moleculecuration.MoleculeCuration;
 
@@ -116,17 +117,27 @@ public class AtomSignatureGenerator {
 
 
         try {
+            if (InputParser.verbose)
+                System.out.println("[INFO] Reading file and generating signatures... ");
+
+            String msg = "";
+
             if (inputIsSDF) {
                 reader = new IteratingSDFReader(new FileReader(new File(file)), DefaultChemObjectBuilder.getInstance());
                 reader.setSkip(true);
                 writer = new FileWriter(new File(signaturesFile));
 
-                System.out.println("Reading file and generating signatures... ");
                 int count = 0;
                 while (reader.hasNext()) {
                     IAtomContainer molecule = reader.next();
                     curateAndWrite(molecule, writer);
-                    System.out.println(count++);
+                    //System.out.println(count++);
+
+                    if (InputParser.verbose) {
+                        msg = "\r[INFO] Processed "+(count++);
+                        System.out.write(msg.getBytes());
+                        System.out.flush();
+                    }
                 }
                 writer.close();
             } else {
@@ -135,7 +146,6 @@ public class AtomSignatureGenerator {
                 String line;
                 int count = 0;
 
-                System.out.println("Reading file and generating signatures... ");
                 while ((line = smilesReader.readLine()) != null) {
                     String smiles_names = line;
                     try {
@@ -143,7 +153,13 @@ public class AtomSignatureGenerator {
                         SmilesParser sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
                         IAtomContainer molecule = sp.parseSmiles(splitted[0]);
                         curateAndWrite(molecule, writer);
-                        System.out.println(count++);
+
+                        if (InputParser.verbose) {
+                            msg = "\r[INFO] Processed "+(count++);
+                            System.out.write(msg.getBytes());
+                            System.out.flush();
+                        }
+
                     } catch (InvalidSmilesException ex) {
                         Logger.getLogger(NPScoreCalculator.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (Exception e) {
@@ -153,6 +169,8 @@ public class AtomSignatureGenerator {
                 smilesReader.close();
                 writer.close();
             }
+
+            if (InputParser.verbose) System.out.println();
 
         } catch (Exception e) {
             e.printStackTrace();

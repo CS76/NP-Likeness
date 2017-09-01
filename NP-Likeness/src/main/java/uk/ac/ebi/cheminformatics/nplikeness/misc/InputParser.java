@@ -42,6 +42,8 @@ public class InputParser {
     boolean serialize = false;
     boolean generateSignatures = false;
 
+    public static boolean verbose = false;
+
     final CommandLineParser parser;
     final HelpFormatter formatter;
     final DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd-HH-mm-ss");
@@ -63,6 +65,7 @@ public class InputParser {
         dateTime = dateFormat.format(date);
         options.addOption("help", false, "Usage information");
         options.addOption("v", false, "Application info");
+        options.addOption("verbose", false, "Verbose output");
         options.addOption("in", true, "Input structure file to score or to generateSignatures");
         options.addOption("out", true, "Output structure from scoring");
         options.addOption("intype", true, "Input file type: Enter sdf/smi");
@@ -123,6 +126,9 @@ public class InputParser {
             }
             if (commandLine.hasOption("outtype")) {
                 out_file_type = parseFileType(commandLine.getOptionValue("outtype"));
+            }
+            if (commandLine.hasOption("verbose")) {
+                verbose = true;
             }
 
             if (commandLine.hasOption("outFragments")) {
@@ -209,6 +215,8 @@ public class InputParser {
             printOutput();
         }
         if (generateSignatures) {
+            if (verbose)
+                System.out.println("[INFO] Generating signatures");
             AtomSignatureGenerator generator = new AtomSignatureGenerator();
             if (in_file_type == FILE_TYPE.smi) {
                 generator.setInputIsSDF(false);
@@ -216,6 +224,8 @@ public class InputParser {
             generator.generateAtomSignatures(inFile.getCanonicalPath(), getSignaturesOutFile().getCanonicalPath());
         }
         if (serialize) {
+            if (verbose)
+                System.out.println("[INFO] Serializing signatures");
             new SignatureSerializer().getSerialisedSignatures(fragmentsFile.getCanonicalPath(), getSerializedSignaturesOutFile().getCanonicalPath());
         }
 
@@ -318,7 +328,6 @@ public class InputParser {
             String output = (inFile.getParent() == null ? "" : inFile.getParent() + File.separator) +
                     FilenameUtils.getBaseName(inFile.getCanonicalPath()) +
                     "fragments" + dateTime + ".txt";
-            System.out.println("output = " + output);
             fragmentsFile = new File(output);
         }
         return fragmentsFile;
@@ -330,8 +339,6 @@ public class InputParser {
                     FilenameUtils.getBaseName(fragmentsFile.getCanonicalPath()) +
                     "serialized.out";
             serializedFragmentsFile = new File(output);
-            System.out.println("output = " + output);
-            System.out.println("fragmentsFile = " + fragmentsFile.getParent());
         }
         return serializedFragmentsFile;
     }
