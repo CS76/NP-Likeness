@@ -315,7 +315,10 @@ public class InputParser {
             }
         }
         if (inFile != null) {
-            String output = inFile.getParent() + File.separator + FilenameUtils.getBaseName(inFile.getCanonicalPath()) + "fragments" + dateTime + ".txt";
+            String output = (inFile.getParent() == null ? "" : inFile.getParent() + File.separator) +
+                    FilenameUtils.getBaseName(inFile.getCanonicalPath()) +
+                    "fragments" + dateTime + ".txt";
+            System.out.println("output = " + output);
             fragmentsFile = new File(output);
         }
         return fragmentsFile;
@@ -323,8 +326,12 @@ public class InputParser {
 
     private File getSerializedSignaturesOutFile() throws IOException {
         if (fragmentsFile != null) {
-            String output = fragmentsFile.getParent() + File.separator + FilenameUtils.getBaseName(fragmentsFile.getCanonicalPath()) + "serialized" + ".out";
+            String output = (fragmentsFile.getParent() == null ? "" : fragmentsFile.getParent()+File.separator) +
+                    FilenameUtils.getBaseName(fragmentsFile.getCanonicalPath()) +
+                    "serialized.out";
             serializedFragmentsFile = new File(output);
+            System.out.println("output = " + output);
+            System.out.println("fragmentsFile = " + fragmentsFile.getParent());
         }
         return serializedFragmentsFile;
     }
