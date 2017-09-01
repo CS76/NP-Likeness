@@ -215,8 +215,10 @@ public class InputParser {
             printOutput();
         }
         if (generateSignatures) {
-            if (verbose)
+            if (verbose) {
                 System.out.println("[INFO] Generating signatures");
+                System.out.println("[INFO] Signatures will be written to "+ getSignaturesOutFile().getCanonicalPath());
+            }
             AtomSignatureGenerator generator = new AtomSignatureGenerator();
             if (in_file_type == FILE_TYPE.smi) {
                 generator.setInputIsSDF(false);
@@ -224,8 +226,10 @@ public class InputParser {
             generator.generateAtomSignatures(inFile.getCanonicalPath(), getSignaturesOutFile().getCanonicalPath());
         }
         if (serialize) {
-            if (verbose)
+            if (verbose) {
                 System.out.println("[INFO] Serializing signatures");
+                System.out.println("[INFO] Signatures will be serialized to "+ getSerializedSignaturesOutFile().getCanonicalPath());
+            }
             new SignatureSerializer().getSerialisedSignatures(fragmentsFile.getCanonicalPath(), getSerializedSignaturesOutFile().getCanonicalPath());
         }
 
