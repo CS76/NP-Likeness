@@ -14,6 +14,17 @@ plug-in for Taverna-2.2 which is an open source work-flow management system.
   - The NPLikenessScorer.jar is a standalone Java ARchive offering the functionality similar to
 the taverna workflows found here http://www.myexperiment.org/packs/183.html.
 
+A conda package is available through [bioconda](https://bioconda.github.io). Simply install it with:
+
+```sh
+conda install -c bioconda np-likeness-scorer 
+```
+
+You can also use NPLS as [Docker](https://quay.io/repository/biocontainers/np-likeness-scorer?tab=tags)
+or [Singularity](https://depot.galaxyproject.org/singularity/np-likeness-scorer%3A2.1--py27_0) container.
+The Galaxy integration can be found at the [Galaxy ToolShed](https://toolshed.g2.bx.psu.edu/view/bgruening/natural_product_likeness) or as part of the [ChemicalToolBox](https://github.com/bgruening/docker-galaxy-chemicaltoolbox).
+
+
 
 ### Usage:
 The standalone jar distributed with this release can be executed from the terminal using the
